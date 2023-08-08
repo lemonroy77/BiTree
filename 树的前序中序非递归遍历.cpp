@@ -12,25 +12,25 @@ typedef struct{
     BTNode* data[Maxsize];
     int top;
 }SeqStack;
-void CreateBTree(BiTree &T,char *str)	//´´½¨¶ş²æÊ÷
+void CreateBTree(BiTree &T,char *str)	//åˆ›å»ºäºŒå‰æ ‘
 {
     BTNode *St[Maxsize],*p=NULL;
     int top=-1,k,j=0;
     char ch;
-    T=NULL;				//½¨Á¢µÄ¶ş²æÊ÷³õÊ¼Ê±Îª¿Õ
+    T=NULL;				//å»ºç«‹çš„äºŒå‰æ ‘åˆå§‹æ—¶ä¸ºç©º
     ch=str[j];
-    while (ch!='\0')  	//strÎ´É¨ÃèÍêÊ±Ñ­»·
+    while (ch!='\0')  	//stræœªæ‰«æå®Œæ—¶å¾ªç¯
     {
         switch(ch)
         {
-            case '(':top++;St[top]=p;k=1; break;		//Îª×óº¢×Ó½Úµã
+            case '(':top++;St[top]=p;k=1; break;		//ä¸ºå·¦å­©å­èŠ‚ç‚¹
             case ')':top--;break;
-            case ',':k=2; break;                      		//Îªº¢×Ó½ÚµãÓÒ½Úµã
+            case ',':k=2; break;                      		//ä¸ºå­©å­èŠ‚ç‚¹å³èŠ‚ç‚¹
             default:p=(BTNode *)malloc(sizeof(BTNode));
                 p->data=ch;p->lchild=p->rchild=NULL;
-                if (T==NULL)                    	 	//*pÎª¶ş²æÊ÷µÄ¸ù½Úµã
+                if (T==NULL)                    	 	//*pä¸ºäºŒå‰æ ‘çš„æ ¹èŠ‚ç‚¹
                     T=p;
-                else  								//ÒÑ½¨Á¢¶ş²æÊ÷¸ù½Úµã
+                else  								//å·²å»ºç«‹äºŒå‰æ ‘æ ¹èŠ‚ç‚¹
                 {
                     switch(k)
                     {
@@ -51,14 +51,14 @@ void push(SeqStack *S,BiTree p){
     S->top++;
     S->data[S->top] = p;
 }
-//³öÕ»
+//å‡ºæ ˆ
 void pop(SeqStack *S,BiTree &p){
     if(S->top==-1)  return;
     p=S->data[S->top--];
 }
-//È¡Õ»¶¥²Ù×÷
+//å–æ ˆé¡¶æ“ä½œ
 void GetTop(SeqStack *S,BTNode*p){
-    //Õ»Îª¿ÕµÄÇé¿ö
+    //æ ˆä¸ºç©ºçš„æƒ…å†µ
     if(S->top==-1) return;
     p=S->data[S->top];
 }
@@ -78,11 +78,30 @@ void preorder(BiTree T){
         }
     }
 }
+void Inorder(BiTree T){
+    SeqStack *s = (SeqStack*)malloc(sizeof(SeqStack));
+    InitStack(s);
+    BTNode*p=T;
+    while(p||s->top!=-1){
+        if(p){
+            push(s,p);
+            p=p->lchild;
+        }
+        else{
+            pop(s,p);
+            printf("%c ",p->data);
+            p=p->rchild;
+        }
+    }
+}
 int main()
 {
     BTNode *T;
     CreateBTree(T,"A(B(D,E),C(,F))");
     printf("\n");
+    printf("æ ‘çš„å‰åºéé€’å½’éå†ä¸º:");
     preorder(T);
+    printf("æ ‘çš„ä¸­åºéé€’å½’éå†ä¸º:");
+    Inorder(T);
     return 0;
 }
